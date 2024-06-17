@@ -1,4 +1,5 @@
 import pygame
+import objects
 
 pygame.init()
 WIDTH = 1280
@@ -20,7 +21,7 @@ FIELD_WIDTH = 1000
 FIELD_HIGHT = 700
 SQUARE_DIMENSIONS = 20
 
-field = []
+field : list[list[objects.Tile]] = []
 for y in range(
     0,
     FIELD_HIGHT, 
@@ -42,11 +43,12 @@ for x in range(
             pygame.draw.rect(
                 screen, 
                 (170, 170, 170), 
-                (
+                objects.Tile(
                     int((screen.get_width() - FIELD_WIDTH) / 2 + x), 
                     int((screen.get_height() - FIELD_HIGHT) / 2 + y), 
                     SQUARE_DIMENSIONS, 
-                    SQUARE_DIMENSIONS), 
+                    SQUARE_DIMENSIONS
+                ), 
                 1
             )
         )
@@ -54,15 +56,16 @@ for x in range(
 for i in range(len(field)):
     print(field[i][0].topleft)
 
-    
-#   pygame.Rect.bottomleft
-
 
 while running:
     clock.tick(60)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+            
+    if pygame.mouse.get_pressed()[0]:
+        ...
+        pygame.RectValue
 
     
     pygame.display.flip()
