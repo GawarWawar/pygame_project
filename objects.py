@@ -11,29 +11,23 @@ class Field():
         self.FIELD_HIGHT = FIELD_HIGHT
         self.SQUARE_DIMENSIONS = SQUARE_DIMENSIONS
         
-        
         self.field_of_tiles = []
 
     def draw_field(self, screen):
         field : list[list[Tile]] = []
-        for y in range(
-            0,
-            self.FIELD_HIGHT, 
-            self.SQUARE_DIMENSIONS
-        ):    
-            field.append([])
 
         for x in range(
             0,
             self.FIELD_WIDTH, 
             self.SQUARE_DIMENSIONS
         ):    
+            field.append([])
             for y in range(
                 0,
                 self.FIELD_HIGHT,
                 self.SQUARE_DIMENSIONS
             ):
-                field[int(y / self.SQUARE_DIMENSIONS)].append(
+                field[int(x / self.SQUARE_DIMENSIONS)].append(
                     Tile(
                         screen,
                         (
@@ -51,6 +45,14 @@ class Field():
             
             self.field_of_tiles = field
             
+    def get_square_array_position(self, mouse_position):
+        if len(self.field_of_tiles) == 0:
+            raise AttributeError("Need to add tiles to the field first")
+        return (
+            int((mouse_position[0] - self.top_left_x) / self.SQUARE_DIMENSIONS),
+            int((mouse_position[1] - self.top_left_y) / self.SQUARE_DIMENSIONS)
+        )
+        ...
             
 
 class Tile(pygame.Rect):
