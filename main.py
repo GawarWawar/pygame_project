@@ -33,15 +33,7 @@ while running:
             mouse_position = event.dict["pos"]
             
             if (
-                (
-                    mouse_position[0] >= field.top_left_x 
-                    and mouse_position[1] >= field.top_left_y
-                )
-                and
-                (
-                    mouse_position[0] < field.top_left_x + field.FIELD_WIDTH 
-                    and mouse_position[1] < field.top_left_y + field.FIELD_HIGHT
-                )
+                field.is_in_field(mouse_position)
             ):  
                 
                 square_position = field.get_square_array_position(mouse_position)
@@ -51,10 +43,10 @@ while running:
                         screen,
                         (
                             int(
-                                square_position[0] * field.SQUARE_DIMENSIONS + field.top_left_x
+                                square_position[0] * field.SQUARE_DIMENSIONS + field.top_left[0]
                             ),
                             int(
-                                square_position[1] * field.SQUARE_DIMENSIONS + field.top_left_y
+                                square_position[1] * field.SQUARE_DIMENSIONS + field.top_left[1]
                             )
                         ),
                         field.SQUARE_DIMENSIONS,

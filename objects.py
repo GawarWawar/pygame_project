@@ -39,8 +39,10 @@ class Field():
                     )
                 )
             
-            self.top_left_x = int((screen.get_width() - self.FIELD_WIDTH) / 2)
-            self.top_left_y = int((screen.get_height() - self.FIELD_HIGHT) / 2)
+            self.top_left = (
+                int((screen.get_width() - self.FIELD_WIDTH) / 2), # x
+                int((screen.get_height() - self.FIELD_HIGHT) / 2) # y
+            )
             
             
             self.field_of_tiles = field
@@ -49,9 +51,25 @@ class Field():
         if len(self.field_of_tiles) == 0:
             raise AttributeError("Need to add tiles to the field first")
         return (
-            int((mouse_position[0] - self.top_left_x) / self.SQUARE_DIMENSIONS),
-            int((mouse_position[1] - self.top_left_y) / self.SQUARE_DIMENSIONS)
+            int((mouse_position[0] - self.top_left[0]) / self.SQUARE_DIMENSIONS),
+            int((mouse_position[1] - self.top_left[1]) / self.SQUARE_DIMENSIONS)
         )
+        
+    def is_in_field(self, mouse_position):   
+        if(
+            (
+                mouse_position[0] >= self.top_left[0]
+                and mouse_position[1] >= self.top_left[1]
+            )
+            and
+            (
+                mouse_position[0] < self.top_left[0] + self.FIELD_WIDTH 
+                and mouse_position[1] < self.top_left[1] + self.FIELD_HIGHT
+            )
+        ):
+            return True
+        else:
+            return False
         ...
             
 
