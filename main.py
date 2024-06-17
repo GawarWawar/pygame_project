@@ -16,38 +16,46 @@ dt = 0
 # for j in range(0, int(screen.get_height()), 20):
 #     lines[1].append(pygame.draw.line(screen, "white", pygame.Vector2(0, j), pygame.Vector2(screen.get_width(), j)))
 
-FIELD_WIDTH = 100
-FIELD_HIGHT = 70
+FIELD_WIDTH = 1000
+FIELD_HIGHT = 700
 SQUARE_DIMENSIONS = 20
 
 field = []
-for i in range(
+for y in range(
+    0,
+    FIELD_HIGHT, 
+    SQUARE_DIMENSIONS
+):    
+    field.append([])
+
+for x in range(
     0,
     FIELD_WIDTH, 
     SQUARE_DIMENSIONS
 ):    
-    field.append([])
-    for j in range(
+    for y in range(
         0,
         FIELD_HIGHT,
         SQUARE_DIMENSIONS
     ):
-        field[int(i / SQUARE_DIMENSIONS)].append(
+        field[int(y / SQUARE_DIMENSIONS)].append(
             pygame.draw.rect(
                 screen, 
                 (170, 170, 170), 
                 (
-                    int((screen.get_width() - FIELD_WIDTH) / 2 + i), 
-                    int((screen.get_height() - FIELD_HIGHT) / 2 + j), 
+                    int((screen.get_width() - FIELD_WIDTH) / 2 + x), 
+                    int((screen.get_height() - FIELD_HIGHT) / 2 + y), 
                     SQUARE_DIMENSIONS, 
                     SQUARE_DIMENSIONS), 
                 1
             )
         )
 
+for i in range(len(field)):
+    print(field[i][0].topleft)
 
     
-  
+#   pygame.Rect.bottomleft
 
 
 while running:
