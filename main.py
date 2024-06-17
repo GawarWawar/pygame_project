@@ -20,8 +20,6 @@ dt = 0
 field = objects.Field(1000, 700, 20)
 field.draw_field(screen)
 
-print(field.FIELD_HIGHT)
-
 # for i in range(len(field)):
 #     print(field[i][0].topleft)
 
@@ -33,8 +31,6 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_position = event.dict["pos"]
-            print(mouse_position, field.top_left_x, field.top_left_y)
-            
             
             if (
                 (
@@ -43,34 +39,27 @@ while running:
                 )
                 and
                 (
-                    mouse_position[0] <= field.top_left_x + field.FIELD_WIDTH 
-                    and mouse_position[1] <= field.top_left_y + field.FIELD_HIGHT
+                    mouse_position[0] < field.top_left_x + field.FIELD_WIDTH 
+                    and mouse_position[1] < field.top_left_y + field.FIELD_HIGHT
                 )
             ):  
-                print(
-                    int((mouse_position[0] - field.top_left_x) / field.SQUARE_DIMENSIONS),
-                    int((mouse_position[1] - field.top_left_y) / field.SQUARE_DIMENSIONS)
-                )  
-                field.field_of_tiles[
-                    int(((screen.get_width() - mouse_position[0]) / 2) / field.SQUARE_DIMENSIONS)
-                ][
-                    int(((screen.get_height() - mouse_position[1]) / 2) / field.SQUARE_DIMENSIONS)
-                ] = objects.Road(
-                    screen,
-                    (
-                        int(
-                            (
-                                mouse_position[0] - field.top_left_x
-                            ) * field.SQUARE_DIMENSIONS
+                
+                square_position = field.get_square_array_position(mouse_position)
+                
+                field.field_of_tiles[square_position[0]][square_position[1]] \
+                    = objects.Road(
+                        screen,
+                        (
+                            int(
+                                square_position[0] * field.SQUARE_DIMENSIONS + field.top_left_x
+                            ),
+                            int(
+                                square_position[1] * field.SQUARE_DIMENSIONS + field.top_left_y
+                            )
                         ),
-                        int(
-                            (
-                                mouse_position[1] - field.top_left_y
-                            ) * field.SQUARE_DIMENSIONS)
-                    ),
-                    field.SQUARE_DIMENSIONS,
-                    field.SQUARE_DIMENSIONS,
-                )
+                        field.SQUARE_DIMENSIONS,
+                        field.SQUARE_DIMENSIONS,
+                    )
 
             
             
