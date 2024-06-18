@@ -17,8 +17,25 @@ dt = 0
 # for j in range(0, int(screen.get_height()), 20):
 #     lines[1].append(pygame.draw.line(screen, "white", pygame.Vector2(0, j), pygame.Vector2(screen.get_width(), j)))
 
-field = basic_tiles.Field(1000, 700, 20)
+field = basic_tiles.Field(300, 220, 20)
 field.draw_field(screen)
+
+#draw a map
+for i in range(len(field.field_of_tiles)):
+    if i == 0:
+        tile_type = basic_tiles.Entrance
+    elif i != len(field.field_of_tiles)-1:
+        tile_type = basic_tiles.Road
+    else:
+        tile_type = basic_tiles.Base
+        
+    tile_coordinates = field.field_of_tiles[i][5].body.topleft
+    field.field_of_tiles[i][5] = tile_type(
+                        screen,
+                        tile_coordinates,
+                        field.SQUARE_DIMENSIONS,
+                        field.SQUARE_DIMENSIONS,
+                    )
 
 # for i in range(len(field)):
 #     print(field[i][0].topleft)
@@ -38,22 +55,39 @@ while running:
                 field.is_in_field(mouse_position)
             ):  
                 
-                square_position = field.get_square_array_position(mouse_position)
+                tile_arr_pos = field.get_square_array_position(mouse_position)
+                tile_coordinates = field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].body.topleft
                 
-                field.field_of_tiles[square_position[0]][square_position[1]] \
-                    = basic_tiles.Road(
-                        screen,
-                        (
-                            int(
-                                square_position[0] * field.SQUARE_DIMENSIONS + field.top_left[0]
-                            ),
-                            int(
-                                square_position[1] * field.SQUARE_DIMENSIONS + field.top_left[1]
+                    
+                print(isinstance(
+                    field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]],
+                    basic_tiles.TowerFundament
+                ))
+                
+                if not isinstance(
+                    field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]],
+                    basic_tiles.Road
+                ):
+                    if isinstance(
+                        field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]],
+                        basic_tiles.TowerFundament
+                    ):
+                        field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]] \
+                            = basic_tiles.BasicTower(
+                                screen,
+                                tile_coordinates,
+                                field.SQUARE_DIMENSIONS,
+                                field.SQUARE_DIMENSIONS,
                             )
-                        ),
-                        field.SQUARE_DIMENSIONS,
-                        field.SQUARE_DIMENSIONS,
-                    )
+                    else:
+                        field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]] \
+                            = basic_tiles.TowerFundament(
+                                screen,
+                                tile_coordinates,
+                                field.SQUARE_DIMENSIONS,
+                                field.SQUARE_DIMENSIONS,
+                            )
+                    
         
             
             

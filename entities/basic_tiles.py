@@ -76,13 +76,14 @@ class Field():
 class Tile():
     fill_colour = (170, 170, 170)
     border_size = 1
+    corner_radius = (-1, -1, -1, -1) #top_left, top_right, bottom_left, bottom_right
     
     def __init__(
         self, 
         screen: pygame.Surface,
         coordinates: tuple,
         width: int,
-        height: int
+        height: int,
     ):
         self.screen = screen
         self.body = pygame.draw.rect(
@@ -94,7 +95,11 @@ class Tile():
                 width, 
                 height
             ), 
-            self.border_size
+            self.border_size,
+            self.corner_radius[0],
+            self.corner_radius[1],
+            self.corner_radius[2],
+            self.corner_radius[3],
         )
     
     @classmethod    
@@ -119,20 +124,22 @@ class Road(Tile):
     border_size = 100
     ... 
     
-       
 class Base(Road):
     fill_colour = (0, 139, 139)
-    border_size = 100
     
 class Entrance(Road):
     fill_colour = (255, 255, 255)
-    border_size = 100
+
+
 
 class TowerFundament (Tile):
     fill_colour = (180, 160, 160) 
     border_size = 100
+    
+class Tower (TowerFundament):
+    ...
 
-if __name__ == "__main__":
-    new_tile = Tile(0, 0, 10, 10)
-    new_tile = new_tile.transform(Tile.get_subclusses()[0])
-    print(new_tile.__name__)
+class BasicTower (Tower):
+    fill_colour = (0, 150, 0)
+    border_size = 100
+    draw_function = pygame.draw.circle
