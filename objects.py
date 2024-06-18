@@ -82,7 +82,7 @@ class Tile(pygame.Rect):
         screen: pygame.Surface,
         coordinates: tuple,
         width: int,
-        hight: int
+        height: int
     ):
         self.screen = screen
         self.body = pygame.draw.rect(
@@ -92,11 +92,10 @@ class Tile(pygame.Rect):
                 coordinates[0],
                 coordinates[1],
                 width, 
-                hight
+                height
             ), 
             self.border_size
         )
-    
     
     @classmethod    
     def get_subclusses(self):
@@ -108,7 +107,6 @@ class Tile(pygame.Rect):
         return self
         
 class Road(Tile):
-    fill_colour = (200, 0, 0)
     border_size = 100
     ... 
     
