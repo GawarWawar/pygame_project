@@ -29,6 +29,8 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        
+        #player actions
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_position = event.dict["pos"]
             
@@ -52,7 +54,7 @@ while running:
                         field.SQUARE_DIMENSIONS,
                         field.SQUARE_DIMENSIONS,
                     )
-
+        
             
             
             
