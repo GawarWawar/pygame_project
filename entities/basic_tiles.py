@@ -25,13 +25,15 @@ class Tile():
         self, 
         screen: pygame.Surface,
     ):
-
-        
         pygame.draw.rect(
             screen,
             self.fill_colour,
             self.rect,
-            self.border_size
+            self.border_size,
+            self.corner_radius[0],
+            self.corner_radius[1],
+            self.corner_radius[2],
+            self.corner_radius[3],
         )
     
     @classmethod    
@@ -43,10 +45,10 @@ class Tile():
         self = globals()[new_cls]
         return self
     
-    def set_screen_colour(self):
+    def set_screen_colour(self, screen):
         self.fill_colour = self.screen.get_colorkey()
         self.__init__(
-            self.screen,
+            screen,
             self.rect.topleft,
             self.rect.width,
             self.rect.height
@@ -75,3 +77,4 @@ class BasicTower (Tower):
     fill_colour = (0, 150, 0)
     border_size = 100
     draw_function = pygame.draw.circle
+    corner_radius = (20, 20, 20, 20)
