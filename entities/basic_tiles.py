@@ -6,27 +6,32 @@ class Tile():
     corner_radius = (-1, -1, -1, -1) #top_left, top_right, bottom_left, bottom_right
     
     def __init__(
-        self, 
-        screen: pygame.Surface,
+        self,
         coordinates: tuple,
         width: int,
         height: int,
+    ) -> None:
+        self.coordinates = coordinates
+        self.width = width
+        self.height = height
+        self.rect = pygame.Rect(
+            self.coordinates[0],
+            self.coordinates[1],
+            self.width, 
+            self.height,
+        )
+    
+    def draw(
+        self, 
+        screen: pygame.Surface,
     ):
-        self.screen = screen
-        self.body = pygame.draw.rect(
-            screen, 
-            self.fill_colour, 
-            pygame.Rect(
-                coordinates[0],
-                coordinates[1],
-                width, 
-                height
-            ), 
-            self.border_size,
-            self.corner_radius[0],
-            self.corner_radius[1],
-            self.corner_radius[2],
-            self.corner_radius[3],
+
+        
+        pygame.draw.rect(
+            screen,
+            self.fill_colour,
+            self.rect,
+            self.border_size
         )
     
     @classmethod    
@@ -42,9 +47,9 @@ class Tile():
         self.fill_colour = self.screen.get_colorkey()
         self.__init__(
             self.screen,
-            self.body.topleft,
-            self.body.width,
-            self.body.height
+            self.rect.topleft,
+            self.rect.width,
+            self.rect.height
         )
         
 class Road(Tile):

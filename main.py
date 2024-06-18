@@ -30,13 +30,13 @@ for i in range(len(field.field_of_tiles)):
     else:
         tile_type = basic_tiles.Base
         
-    tile_coordinates = field.field_of_tiles[i][5].body.topleft
+    tile_coordinates = field.field_of_tiles[i][5].rect.topleft
     field.field_of_tiles[i][5] = tile_type(
-                        screen,
-                        tile_coordinates,
-                        field.SQUARE_DIMENSIONS,
-                        field.SQUARE_DIMENSIONS,
-                    )
+        tile_coordinates,
+        field.SQUARE_DIMENSIONS,
+        field.SQUARE_DIMENSIONS,
+    )
+    field.field_of_tiles[i][5].draw(screen)
 
 # for i in range(len(field)):
 #     print(field[i][0].topleft)
@@ -57,40 +57,39 @@ while running:
             ):  
                 
                 tile_arr_pos = field.get_square_array_position(mouse_position)
-                tile_coordinates = field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].body.topleft
+                tile_coordinates = field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].rect.topleft
                 
                     
-                print(isinstance(
-                    field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]],
-                    basic_tiles.TowerFundament
-                ))
+
                 
                 if not isinstance(
                     field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]],
                     basic_tiles.Road
                 ):
+                    print(isinstance(
+                    field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]],
+                    basic_tiles.TowerFundament
+                ))
                     if isinstance(
                         field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]],
                         basic_tiles.TowerFundament
                     ):
                         field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]] \
                             = basic_tiles.BasicTower(
-                                screen,
                                 tile_coordinates,
                                 field.SQUARE_DIMENSIONS,
                                 field.SQUARE_DIMENSIONS,
                             )
+                        field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].draw(screen) 
                     else:
                         field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]] \
                             = basic_tiles.TowerFundament(
-                                screen,
                                 tile_coordinates,
                                 field.SQUARE_DIMENSIONS,
                                 field.SQUARE_DIMENSIONS,
                             )
+                        field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].draw(screen)
                     
-        
-            
             
             
     if pygame.mouse.get_pressed()[0]:

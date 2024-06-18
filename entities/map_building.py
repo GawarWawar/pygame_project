@@ -1,5 +1,5 @@
 import pygame
-import basic_tiles
+import entities.basic_tiles as basic_tiles
 
 class Field():
     def __init__(
@@ -28,16 +28,17 @@ class Field():
                 self.FIELD_HIGHT,
                 self.SQUARE_DIMENSIONS
             ):
-                field[int(x / self.SQUARE_DIMENSIONS)].append(
-                    basic_tiles.Tile(
-                        screen,
+                tile_to_add = basic_tiles.Tile(
                         (
                             int((screen.get_width() - self.FIELD_WIDTH) / 2 + x), 
                             int((screen.get_height() - self.FIELD_HIGHT) / 2 + y) 
                         ),
                         self.SQUARE_DIMENSIONS,
                         self.SQUARE_DIMENSIONS
-                    )
+                    )  
+                tile_to_add.draw(screen)
+                field[int(x / self.SQUARE_DIMENSIONS)].append(
+                    tile_to_add
                 )
             
             self.top_left = (
