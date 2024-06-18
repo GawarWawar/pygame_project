@@ -73,7 +73,7 @@ class Field():
         ...
             
 
-class Tile(pygame.Rect):
+class Tile():
     fill_colour = (170, 170, 170)
     border_size = 1
     
@@ -105,14 +105,32 @@ class Tile(pygame.Rect):
     def transform (self, new_cls):
         self = globals()[new_cls]
         return self
+    
+    def set_screen_colour(self):
+        self.fill_colour = self.screen.get_colorkey()
+        self.__init__(
+            self.screen,
+            self.body.topleft,
+            self.body.width,
+            self.body.height
+        )
         
 class Road(Tile):
     border_size = 100
     ... 
     
        
-class Tower(Tile):
-    ...
+class Base(Road):
+    fill_colour = (0, 139, 139)
+    border_size = 100
+    
+class Entrance(Road):
+    fill_colour = (255, 255, 255)
+    border_size = 100
+
+class TowerFundament (Tile):
+    fill_colour = (180, 160, 160) 
+    border_size = 100
 
 if __name__ == "__main__":
     new_tile = Tile(0, 0, 10, 10)
