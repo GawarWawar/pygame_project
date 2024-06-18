@@ -1,5 +1,6 @@
 import pygame
 import entities.basic_tiles as basic_tiles
+import entities.map_building as map_building
 
 pygame.init()
 WIDTH = 1280
@@ -17,7 +18,7 @@ dt = 0
 # for j in range(0, int(screen.get_height()), 20):
 #     lines[1].append(pygame.draw.line(screen, "white", pygame.Vector2(0, j), pygame.Vector2(screen.get_width(), j)))
 
-field = basic_tiles.Field(300, 220, 20)
+field = map_building.Field(300, 220, 20)
 field.draw_field(screen)
 
 #draw a map
