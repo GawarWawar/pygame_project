@@ -1,4 +1,6 @@
 import pygame
+import entities.basic_tiles as basic_tiles
+import entities.map_building as map_building
 
 pygame.init()
 WIDTH = 1280
@@ -16,46 +18,28 @@ dt = 0
 # for j in range(0, int(screen.get_height()), 20):
 #     lines[1].append(pygame.draw.line(screen, "white", pygame.Vector2(0, j), pygame.Vector2(screen.get_width(), j)))
 
-FIELD_WIDTH = 1000
-FIELD_HIGHT = 700
-SQUARE_DIMENSIONS = 20
+field = map_building.Field(300, 220, 20)
+field.draw_field(screen)
 
-field = []
-for y in range(
-    0,
-    FIELD_HIGHT, 
-    SQUARE_DIMENSIONS
-):    
-    field.append([])
+#draw a map
+for i in range(len(field.field_of_tiles)):
+    if i == 0:
+        tile_type = basic_tiles.Entrance
+    elif i != len(field.field_of_tiles)-1:
+        tile_type = basic_tiles.Road
+    else:
+        tile_type = basic_tiles.Base
+        
+    tile_coordinates = field.field_of_tiles[i][5].rect.topleft
+    field.field_of_tiles[i][5] = tile_type(
+        tile_coordinates,
+        field.SQUARE_DIMENSIONS,
+        field.SQUARE_DIMENSIONS,
+    )
+    field.field_of_tiles[i][5].draw(screen)
 
-for x in range(
-    0,
-    FIELD_WIDTH, 
-    SQUARE_DIMENSIONS
-):    
-    for y in range(
-        0,
-        FIELD_HIGHT,
-        SQUARE_DIMENSIONS
-    ):
-        field[int(y / SQUARE_DIMENSIONS)].append(
-            pygame.draw.rect(
-                screen, 
-                (170, 170, 170), 
-                (
-                    int((screen.get_width() - FIELD_WIDTH) / 2 + x), 
-                    int((screen.get_height() - FIELD_HIGHT) / 2 + y), 
-                    SQUARE_DIMENSIONS, 
-                    SQUARE_DIMENSIONS), 
-                1
-            )
-        )
-
-for i in range(len(field)):
-    print(field[i][0].topleft)
-
-    
-#   pygame.Rect.bottomleft
+# for i in range(len(field)):
+#     print(field[i][0].topleft)
 
 
 while running:
@@ -63,6 +47,55 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        
+        #player actions
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_position = event.dict["pos"]
+            
+            if (
+                field.is_in_field(mouse_position)
+            ):  
+                
+                tile_arr_pos = field.get_square_array_position(mouse_position)
+                tile_coordinates = field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].rect.topleft
+                
+                    
+
+                
+                if not isinstance(
+                    field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]],
+                    basic_tiles.Road
+                ):
+                    print(isinstance(
+                    field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]],
+                    basic_tiles.TowerFundament
+                ))
+                    if isinstance(
+                        field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]],
+                        basic_tiles.TowerFundament
+                    ):
+                        field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]] \
+                            = basic_tiles.BasicTower(
+                                tile_coordinates,
+                                field.SQUARE_DIMENSIONS,
+                                field.SQUARE_DIMENSIONS,
+                            )
+                        field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].draw(screen) 
+                    else:
+                        field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]] \
+                            = basic_tiles.TowerFundament(
+                                tile_coordinates,
+                                field.SQUARE_DIMENSIONS,
+                                field.SQUARE_DIMENSIONS,
+                            )
+                        field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].draw(screen)
+                    
+            
+            
+    if pygame.mouse.get_pressed()[0]:
+        ...
+        
+        
 
     
     pygame.display.flip()
