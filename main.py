@@ -39,7 +39,7 @@ for i in range(len(field.field_of_tiles)):
         field.SQUARE_DIMENSIONS,
         field.SQUARE_DIMENSIONS,
     )
-    field.field_of_tiles[i][5].draw(screen)
+    field.field_of_tiles[i][5].update(screen)
     
     if tile_type == basic_tiles.Entrance:
         entrances.append((i, 5))
@@ -73,8 +73,7 @@ while running:
                         field.SQUARE_DIMENSIONS/5
                     )
                 )
-                foe_to_append.draw(screen)
-                print(foe_to_append.rect.topleft)
+                foe_to_append.update(screen)
                 foes.append(foe_to_append)
         
         #player actions
@@ -102,7 +101,7 @@ while running:
                                 field.SQUARE_DIMENSIONS,
                                 field.SQUARE_DIMENSIONS,
                             )
-                        field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].draw(screen) 
+                        field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].update(screen) 
                     else:
                         field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]] \
                             = basic_tiles.TowerFundament(
@@ -110,11 +109,11 @@ while running:
                                 field.SQUARE_DIMENSIONS,
                                 field.SQUARE_DIMENSIONS,
                             )
-                        field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].draw(screen)
+                        field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].update(screen)
         
     for row in field.field_of_tiles:
         for tile in row: 
-            tile.draw(screen)    
+            tile.update(screen)    
         
     for foe_arr_pos, foe in enumerate(foes):
         foes[foe_arr_pos].rect = foe.rect.move(foe.speed, 0)      

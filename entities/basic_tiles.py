@@ -1,9 +1,12 @@
+import pathlib
 import pygame
+
   
 class Tile():
     fill_colour = (170, 170, 170)
     border_size = 1
     corner_radius = (-1, -1, -1, -1) #top_left, top_right, bottom_left, bottom_right
+    _image_path = pathlib.Path(__file__).parent.joinpath("pictures/Tile.png")
     
     def __init__(
         self,
@@ -11,29 +14,39 @@ class Tile():
         width: int,
         height: int,
     ) -> None:
+        # TODO: Look at this and decide if this properties are needed
         self.coordinates = coordinates
         self.width = width
         self.height = height
-        self.rect = pygame.Rect(
-            self.coordinates[0],
-            self.coordinates[1],
-            self.width, 
-            self.height,
-        )
-    
-    def draw(
+        
+        # Upload image
+        self.image = pygame.image.load(self._image_path).convert_alpha()
+        self.image = pygame.transform.scale(self.image, (width, height))
+        
+        # Assign rect to property
+        self.rect = self.image.get_rect()
+        
+        # Change the start coordinates
+        self.rect.x = coordinates[0]
+        self.rect.y = coordinates[1]
+        
+    def update(
         self, 
         screen: pygame.Surface,
     ):
-        pygame.draw.rect(
-            screen,
-            self.fill_colour,
+        screen.blit(
+            self.image,
             self.rect,
-            self.border_size,
-            self.corner_radius[0],
-            self.corner_radius[1],
-            self.corner_radius[2],
-            self.corner_radius[3],
+        )
+    
+    # TODO: REWORK OR DELETE
+    def set_screen_colour(self, screen):
+        self.fill_colour = screen.get_colorkey()
+        self.__init__(
+            screen,
+            self.rect.topleft,
+            self.rect.width,
+            self.rect.height
         )
     
     @classmethod    
@@ -45,30 +58,26 @@ class Tile():
         self = globals()[new_cls]
         return self
     
-    def set_screen_colour(self, screen):
-        self.fill_colour = self.screen.get_colorkey()
-        self.__init__(
-            screen,
-            self.rect.topleft,
-            self.rect.width,
-            self.rect.height
-        )
+  
         
 class Road(Tile):
     border_size = 100
-    ... 
+    _image_path = pathlib.Path(__file__).parent.joinpath("pictures/True_road.png")
     
 class Base(Road):
     fill_colour = (0, 139, 139)
+    _image_path = pathlib.Path(__file__).parent.joinpath("pictures/Base.png")
+    
     
 class Entrance(Road):
     fill_colour = (255, 255, 255)
-
+    _image_path = pathlib.Path(__file__).parent.joinpath("pictures/Entance.png")
 
 
 class TowerFundament (Tile):
     fill_colour = (180, 160, 160) 
     border_size = 100
+    _image_path = pathlib.Path(__file__).parent.joinpath("pictures/Tower_fundament.png")
     
 class Tower (TowerFundament):
     ...
@@ -78,3 +87,4 @@ class BasicTower (Tower):
     border_size = 100
     draw_function = pygame.draw.circle
     corner_radius = (20, 20, 20, 20)
+    _image_path = pathlib.Path(__file__).parent.joinpath("pictures/Basic_tower.png")

@@ -36,7 +36,7 @@ class Field():
                         self.SQUARE_DIMENSIONS,
                         self.SQUARE_DIMENSIONS
                     )  
-                tile_to_add.draw(screen)
+                tile_to_add.update(screen)
                 field[int(x / self.SQUARE_DIMENSIONS)].append(
                     tile_to_add
                 )
