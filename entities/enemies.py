@@ -18,7 +18,7 @@ class Enemy(basic_tiles.Tile):
         
     ) -> None:
         self.health_points = 100
-        self.speed = 8
+        self.speed = 3
         
         self.fill_colour = (0, 0, 120)
         self.border_size = 0

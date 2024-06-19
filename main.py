@@ -64,13 +64,13 @@ while running:
         
         if event.type == ENEMY_WAVE:
             for i in range(1):
-                foe_coordinates = field.field_of_tiles[entrances[0][0]][entrances[0][1]].rect.topleft
+                foe_coordinates = field.field_of_tiles[entrances[0][0]][entrances[0][1]].rect.center
                 print(foe_coordinates)
                 foe_to_append = (
                     enemies.Enemy(
                         foe_coordinates,
-                        field.SQUARE_DIMENSIONS,
-                        field.SQUARE_DIMENSIONS
+                        field.SQUARE_DIMENSIONS/5,
+                        field.SQUARE_DIMENSIONS/5
                     )
                 )
                 foe_to_append.draw(screen)
