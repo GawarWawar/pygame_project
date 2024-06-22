@@ -4,6 +4,9 @@ import pygame
 import entities.basic_tiles as basic_tiles
 import entities.enemies as enemies
 
+class TurretRange (basic_tiles.Tile):
+    _image_path = pathlib.Path(__file__).parent.joinpath("pictures/TowerRange.png")
+
 
 class Projectile (basic_tiles.Tile):
     target: enemies.Enemy|None  = None
@@ -43,6 +46,8 @@ class TowerFundament (basic_tiles.Tile):
 class Tower (TowerFundament):
     damage = 0
     attack_speed = 0
+    attack_range = 0
+    
     projectile_speed = 0
     
     projectiles = []
@@ -52,10 +57,18 @@ class Tower (TowerFundament):
     _projectile_image_path = "" 
     
     def __init__(self, coordinates: tuple, width: int, height: int) -> None:
+        self.range = TurretRange(
+            coordinates, 
+            self.attack_range/2,
+            self.attack_range/2
+        )
+        self.range.rect = self.range.rect.move(
+            coordinates[0] - self.range.rect.center[0] + width/2, 
+            coordinates[1] - self.range.rect.center[1] + height/2, 
+        )
+        super().__init__(coordinates, width, height)
 
         
-        super().__init__(coordinates, width, height)
-    
     def fire_projectile(self, target):
         proj = Projectile(
             self.rect.center, 
@@ -74,6 +87,8 @@ class BasicTower (Tower):
 
     projectile_width = 2
     projectile_height = 2
+    attack_range = 500
+    
     _projectile_image_path = pathlib.Path(__file__).parent.joinpath("pictures/Basic_tower.png")
     
     

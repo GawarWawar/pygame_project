@@ -102,6 +102,7 @@ while running:
                                 field.SQUARE_DIMENSIONS,
                             )
                         field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].update(screen) 
+                        field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].range.update(screen)
                     else:
                         field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]] \
                             = towers.TowerFundament(
