@@ -2,9 +2,11 @@ import pathlib
 import pygame
 
 import entities.basic_tiles as basic_tiles
+import entities.enemies as enemies
+
 
 class Projectile (basic_tiles.Tile):
-    target = None
+    target: enemies.Enemy|None  = None
     
     
     # _image_path = pathlib.Path(__file__).parent.joinpath("pictures/Tower_fundament.png")
@@ -16,11 +18,19 @@ class Projectile (basic_tiles.Tile):
         width: int, 
         height: int, 
         image_path: str,
+        projectile_speed: int,
     )-> None:
         self._image_path = image_path 
+        self.speed = projectile_speed
         
         super().__init__(coordinates, width, height)    
-    
+        
+    def attack(self):
+        coordinates = self.target.rect.center
+        coordinates = (coordinates[0] - self.rect.x, coordinates[1] - self.rect.y)
+        self.rect.move(**coordinates)
+        
+
 
 class TowerFundament (basic_tiles.Tile):
     fill_colour = (180, 160, 160) 
@@ -30,6 +40,7 @@ class TowerFundament (basic_tiles.Tile):
 class Tower (TowerFundament):
     damage = 0
     attack_speed = 0
+    projectile_speed = 0
     
     projectiles = []
     
@@ -51,8 +62,7 @@ class Tower (TowerFundament):
         )
         proj.target = target
         self.projectiles.append(proj)
-        
-    
+
     def attack(self, target):
 
         ...
