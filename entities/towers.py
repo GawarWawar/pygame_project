@@ -6,19 +6,6 @@ import entities.enemies as enemies
 
 class TurretRange (basic_tiles.Tile):
     _image_path = pathlib.Path(__file__).parent.joinpath("pictures/TowerRange.png")
-    foes_in_range = pygame.sprite.Group()
-    
-    
-    def detect (
-        self, 
-        foes: list[enemies.Enemy]
-    ):
-        for foe in foes:
-            if self.rect.colliderect(foe.rect):
-                self.foes_in_range.add(foe)
-            else:
-                foe.remove(self.foes_in_range)
-                
 
 
 class Projectile (basic_tiles.Tile):
