@@ -24,8 +24,8 @@ field = map_building.Field(600, 440, 40)
 field.draw_field(screen)
 
 # Draw a map example
-entrances :list[tuple[int, int]] = []
-bases :list[tuple[int, int]] = []
+entrances : list[tuple[int, int]] = []
+bases : list[tuple[int, int]] = []
 for i in range(len(field.field_of_tiles)):
     if i == 0:
         tile_type = basic_tiles.Entrance
@@ -55,6 +55,7 @@ ENEMY_WAVE = pygame.USEREVENT + 1
 pygame.time.set_timer(ENEMY_WAVE, 2000)
 
 foes : list[enemies.Enemy] = []
+turrets = pygame.sprite.Group()
 
 # Main game loop
 while running:
@@ -103,6 +104,7 @@ while running:
                             )
                         field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].update(screen) 
                         field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].range.update(screen)
+                        turrets.add(field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]])
                     else:
                         field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]] \
                             = towers.TowerFundament(
