@@ -117,7 +117,7 @@ while running:
         
     for foe_arr_pos, foe in enumerate(foes):
         foes[foe_arr_pos].rect = foe.rect.move(foe.speed, 0)      
-        pygame.draw.rect(screen, foes[foe_arr_pos].fill_colour, foes[foe_arr_pos].rect)
+        foes[foe_arr_pos].update(screen)
         if foe.rect.colliderect(
             field.field_of_tiles[bases[0][0]][bases[0][1]].rect
         ):
