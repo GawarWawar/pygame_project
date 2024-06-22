@@ -2,6 +2,7 @@ import pygame
 import entities.basic_tiles as basic_tiles
 import entities.map_building as map_building
 import entities.enemies as enemies 
+import entities.towers as towers
 
 pygame.init()
 WIDTH = 1280
@@ -65,7 +66,6 @@ while running:
         if event.type == ENEMY_WAVE:
             for i in range(1):
                 foe_coordinates = field.field_of_tiles[entrances[0][0]][entrances[0][1]].rect.center
-                print(foe_coordinates)
                 foe_to_append = (
                     enemies.Enemy(
                         foe_coordinates,
@@ -93,10 +93,10 @@ while running:
                 ):
                     if isinstance(
                         field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]],
-                        basic_tiles.TowerFundament
+                        towers.TowerFundament
                     ):
                         field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]] \
-                            = basic_tiles.BasicTower(
+                            = towers.BasicTower(
                                 tile_coordinates,
                                 field.SQUARE_DIMENSIONS,
                                 field.SQUARE_DIMENSIONS,
@@ -104,7 +104,7 @@ while running:
                         field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].update(screen) 
                     else:
                         field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]] \
-                            = basic_tiles.TowerFundament(
+                            = towers.TowerFundament(
                                 tile_coordinates,
                                 field.SQUARE_DIMENSIONS,
                                 field.SQUARE_DIMENSIONS,

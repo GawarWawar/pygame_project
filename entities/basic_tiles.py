@@ -51,7 +51,7 @@ class Tile():
     
     @classmethod    
     def get_subclusses(self):
-            return [cls.__name__ for cls in self.__subclasses__()]
+        return [cls.__name__ for cls in self.__subclasses__()]
     
     @classmethod
     def transform (self, new_cls):
