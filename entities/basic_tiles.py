@@ -2,7 +2,7 @@ import pathlib
 import pygame
 
   
-class Tile(pygame.sprite.Sprite()):
+class Tile(pygame.sprite.Sprite):
     fill_colour = (170, 170, 170)
     border_size = 1
     corner_radius = (-1, -1, -1, -1) #top_left, top_right, bottom_left, bottom_right
