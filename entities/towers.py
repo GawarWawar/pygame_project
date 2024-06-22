@@ -27,7 +27,10 @@ class Projectile (basic_tiles.Tile):
         
     def attack(self):
         coordinates = self.target.rect.center
-        coordinates = (coordinates[0] - self.rect.x, coordinates[1] - self.rect.y)
+        coordinates = (
+            (coordinates[0] - self.rect.x) * self.speed, 
+            (coordinates[1] - self.rect.y) * self.speed
+        )
         self.rect.move(**coordinates)
         
 
