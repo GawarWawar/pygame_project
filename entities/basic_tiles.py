@@ -30,7 +30,7 @@ class Tile():
         self.rect.x = coordinates[0]
         self.rect.y = coordinates[1]
         
-    def update(
+    def draw(
         self, 
         screen: pygame.Surface,
     ):

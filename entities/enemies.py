@@ -14,7 +14,7 @@ class Enemy(basic_tiles.Tile):
         
         
         health_points = 100,
-        speed = 3,
+        speed = 1,
         
     ) -> None:
         self.health_points = health_points

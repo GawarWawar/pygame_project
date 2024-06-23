@@ -15,9 +15,10 @@ class TurretRange (basic_tiles.Tile):
     ):
         for foe in foes:
             if self.rect.colliderect(foe.rect):
-                self.foes_in_range.add(foe)
+                self.foes_in_range.append(foe)
             else:
-                foe.remove(self.foes_in_range)
+                if foe in self.foes_in_range:
+                    self.foes_in_range.pop(self.foes_in_range.index(foe))
 
 class Projectile (basic_tiles.Tile):
     target: enemies.Enemy|None  = None
@@ -41,11 +42,12 @@ class Projectile (basic_tiles.Tile):
         
     def attack(self):
         coordinates = self.target.rect.center
+        #BUG: Have strange movements, need to be fixed
         coordinates = (
             (coordinates[0] - self.rect.x) * self.speed, 
             (coordinates[1] - self.rect.y) * self.speed
         )
-        self.rect.move(**coordinates)
+        self.rect = self.rect.move(*coordinates)
         
 
 
@@ -56,10 +58,12 @@ class TowerFundament (basic_tiles.Tile):
     
 class Tower (TowerFundament):
     damage = 0
-    attack_speed = 0
     attack_range = 0
     
     projectile_speed = 0
+    
+    attack_speed = 0
+    _attack_cd = 0
     
     projectiles = []
     
@@ -85,24 +89,39 @@ class Tower (TowerFundament):
             self.rect.center, 
             self.projectile_width, 
             self.projectile_height, 
-            self._projectile_image_path
+            self._projectile_image_path,
+            self.projectile_speed
         )
         proj.target = target
         self.projectiles.append(proj)
 
-    def attack(self, target):
-
+    def cool_down(self) -> bool:
+        # TODO: CHANGE FPS FROM 60 TO CONSTANT
+        if pygame.time.get_ticks() - self._attack_cd  > self.attack_speed * 1000: # -> HERE SHOULD BE FPS
+            return True
+        return False
+        
+    def attack(self):
+        enemy_position = 0
+        if len(self.range.foes_in_range) > 0 and self.cool_down():
+            #BUG: Fires always in the first seen enemy, even when enemy is out of range
+            self.fire_projectile(
+                self.range.foes_in_range[enemy_position]
+            )
+            ticks = pygame.time.get_ticks()
+            self._attack_cd = ticks
+            
         ...
 
 class BasicTower (Tower):
+    attack_speed = 1
 
-    projectile_width = 2
-    projectile_height = 2
-    attack_range = 500
-    
+    projectile_width = 10
+    projectile_height = 10
+    projectile_speed = 0.1
     _projectile_image_path = pathlib.Path(__file__).parent.joinpath("pictures/Basic_tower.png")
     
-    
+    attack_range = 500    
     
     fill_colour = (0, 150, 0)
     border_size = 100

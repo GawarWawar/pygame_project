@@ -40,7 +40,7 @@ for i in range(len(field.field_of_tiles)):
         field.SQUARE_DIMENSIONS,
         field.SQUARE_DIMENSIONS,
     )
-    field.field_of_tiles[i][5].update(screen)
+    field.field_of_tiles[i][5].draw(screen)
     
     if tile_type == basic_tiles.Entrance:
         entrances.append((i, 5))
@@ -55,6 +55,7 @@ ENEMY_WAVE = pygame.USEREVENT + 1
 pygame.time.set_timer(ENEMY_WAVE, 2000)
 
 foes : list[enemies.Enemy] = []
+turrets :list[towers.BasicTower] = []
 
 # Main game loop
 while running:
@@ -73,7 +74,7 @@ while running:
                         field.SQUARE_DIMENSIONS/5
                     )
                 )
-                foe_to_append.update(screen)
+                foe_to_append.draw(screen)
                 foes.append(foe_to_append)
         
         #player actions
@@ -101,8 +102,9 @@ while running:
                                 field.SQUARE_DIMENSIONS,
                                 field.SQUARE_DIMENSIONS,
                             )
-                        field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].update(screen) 
-                        field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].range.update(screen)
+                        turrets.append(field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]])
+                        field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].draw(screen) 
+                        field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].range.draw(screen)
                     else:
                         field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]] \
                             = towers.TowerFundament(
@@ -110,19 +112,28 @@ while running:
                                 field.SQUARE_DIMENSIONS,
                                 field.SQUARE_DIMENSIONS,
                             )
-                        field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].update(screen)
-        
+                        field.field_of_tiles[tile_arr_pos[0]][tile_arr_pos[1]].draw(screen)
+      
+    
     for row in field.field_of_tiles:
         for tile in row: 
-            tile.update(screen)    
+            tile.draw(screen)    
+    
+    for turret in turrets:
+        turret.range.detect(foes)
+        turret.attack()
+        for projectile in turret.projectiles:
+            projectile.attack()
+            projectile.draw(screen)
         
     for foe_arr_pos, foe in enumerate(foes):
         foes[foe_arr_pos].rect = foe.rect.move(foe.speed, 0)      
-        foes[foe_arr_pos].update(screen)
+        foes[foe_arr_pos].draw(screen)
         if foe.rect.colliderect(
             field.field_of_tiles[bases[0][0]][bases[0][1]].rect
         ):
             foes.pop(foe_arr_pos)
+    
             
             
     if pygame.mouse.get_pressed()[0]:
