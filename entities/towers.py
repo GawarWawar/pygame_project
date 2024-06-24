@@ -14,11 +14,10 @@ class TurretRange (basic_tiles.Tile):
         foes: list[enemies.Enemy]
     ):
         for foe in foes:
-            if self.rect.colliderect(foe.rect):
+            if self.rect.colliderect(foe.rect) and foe not in self.foes_in_range:
                 self.foes_in_range.append(foe)
-            else:
-                if foe in self.foes_in_range:
-                    self.foes_in_range.pop(self.foes_in_range.index(foe))
+            elif foe in self.foes_in_range:
+                self.foes_in_range.pop(self.foes_in_range.index(foe))              
 
 class Projectile (basic_tiles.Tile):
     target: enemies.Enemy|None  = None
