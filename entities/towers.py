@@ -41,13 +41,26 @@ class Projectile (basic_tiles.Tile):
         super().__init__(coordinates, width, height)    
         
     def attack(self):
-        coordinates = self.target.rect.center
-        #BUG: Have strange movements, need to be fixed
-        coordinates = (
-            (coordinates[0] - self.rect.x) * self.speed, 
-            (coordinates[1] - self.rect.y) * self.speed
-        )
-        self.rect = self.rect.move(*coordinates)
+        target_coordinates = self.target.rect.center
+        
+        # TODO: move unit vector creation to separate function
+        direction_vector = (target_coordinates[0] - self.rect.x, target_coordinates[1] - self.rect.y)
+        magnitude_of_direction_vector = (
+            direction_vector[0]**2 + 
+            direction_vector[1]**2
+        )**0.5
+        if magnitude_of_direction_vector != 0:
+            unit_vector = (
+                direction_vector[0]/magnitude_of_direction_vector,
+                direction_vector[1]/magnitude_of_direction_vector
+            )
+            movement = (
+                self.speed * unit_vector[0],
+                self.speed * unit_vector[1]
+            )
+
+            self.coordinates = (self.coordinates[0] + movement[0], self.coordinates[1] + movement[1])
+            self.rect = self.rect.move_to(x = self.coordinates[0], y = self.coordinates[1])
         
 
 
@@ -97,7 +110,7 @@ class Tower (TowerFundament):
 
     def cool_down(self) -> bool:
         # TODO: CHANGE FPS FROM 60 TO CONSTANT
-        if pygame.time.get_ticks() - self._attack_cd  > self.attack_speed * 1000: # -> HERE SHOULD BE FPS
+        if pygame.time.get_ticks() - self._attack_cd > self.attack_speed * 1000: # -> HERE SHOULD BE FPS
             return True
         return False
         
@@ -118,7 +131,7 @@ class BasicTower (Tower):
 
     projectile_width = 10
     projectile_height = 10
-    projectile_speed = 0.1
+    projectile_speed = 2
     _projectile_image_path = pathlib.Path(__file__).parent.joinpath("pictures/Basic_tower.png")
     
     attack_range = 500    

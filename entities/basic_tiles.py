@@ -14,8 +14,10 @@ class Tile():
         width: int,
         height: int,
     ) -> None:
-        # TODO: Look at this and decide if this properties are needed
+        # TODO: It is needed for better precision and I need to make all movement work through this stuff coordinates
         self.coordinates = coordinates
+        
+        # TODO: Look at this and decide if this properties are needed
         self.width = width
         self.height = height
         
